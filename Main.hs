@@ -11,12 +11,13 @@ interactWith f inpf outf = do
   input <- readFile inpf
   writeFile outf (f input)
 
-fixLines cs = unlines (map trimTrailSpaces $ lines cs)
+fixLines cs = unlines (map trimTrailWtSpc $ lines cs)
 
-trimTrailSpaces :: String -> String
-trimTrailSpaces cs = reverse (trimLeadSpaces $ reverse cs)
+trimTrailWtSpc :: String -> String
+trimTrailWtSpc cs = reverse (trimLeadWtSpc $ reverse cs)
 
-trimLeadSpaces :: String -> String
-trimLeadSpaces []       = []
-trimLeadSpaces (' ':cs) = trimLeadSpaces cs
-trimLeadSpaces cs       = cs
+trimLeadWtSpc :: String -> String
+trimLeadWtSpc []        = []
+trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
+trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
+trimLeadWtSpc cs        = cs
