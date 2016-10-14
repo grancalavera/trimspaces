@@ -14,9 +14,9 @@ interactWith f inpf outf = do
 fixLines cs = unlines (map trimTrailSpaces $ lines cs)
 
 trimTrailSpaces :: String -> String
-trimTrailSpaces cs = reverse (trimSpaces $ reverse cs)
+trimTrailSpaces cs = reverse (trimLeadSpaces $ reverse cs)
 
-trimSpaces :: String -> String
-trimSpaces []       = []
-trimSpaces (' ':cs) = trimSpaces cs
-trimSpaces cs       = cs
+trimLeadSpaces :: String -> String
+trimLeadSpaces []       = []
+trimLeadSpaces (' ':cs) = trimLeadSpaces cs
+trimLeadSpaces cs       = cs
