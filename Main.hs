@@ -10,9 +10,7 @@ main = do
 
 writeWith f inpf outf = do
   input <- readFile inpf
-  -- because of lazyness, thus forcing strictness
-  -- http://stackoverflow.com/a/2530948/824779
-  id input `seq` (writeFile outf $ f input)
+  input `seq` (writeFile outf $ f input)
 
 fixLines cs = unlines (map trimTrailWtSpc $ lines cs)
 
