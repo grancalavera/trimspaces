@@ -1,6 +1,10 @@
 module Main where
 import System.Environment (getArgs)
-import System.IO (openFile, IOMode)
+import System.IO ( openFile
+                 , hGetContents
+                 , hClose
+                 , IOMode(ReadMode)
+                 )
 
 main = do
   args <- getArgs
@@ -16,6 +20,10 @@ writeWith f inpf outf
                      writeFile outf (f input)
     
 overwriteWith f file = do
+  hdl  <- openFile file ReadMode
+  input <- hGetContents hdl
+  hClose hdl
+  writeFile file (f input)
   putStrLn $ "file \"" ++ file ++ "\" overwritten" 
 
 fixLines cs = unlines (map trimTrailWtSpc $ lines cs)
