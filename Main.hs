@@ -17,7 +17,7 @@ trimTrailWtSpc :: String -> String
 trimTrailWtSpc cs = reverse (trimLeadWtSpc $ reverse cs)
 
 trimLeadWtSpc :: String -> String
-trimLeadWtSpc []        = []
 trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
 trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
 trimLeadWtSpc cs        = cs
+
