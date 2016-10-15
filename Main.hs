@@ -1,11 +1,5 @@
 module Main where
 import System.Environment (getArgs)
-import System.IO ( openFile
-                 , hGetContents
-                 , hClose
-                 , hPutStr
-                 , IOMode(ReadMode, WriteMode)
-                 )
 
 main = do
   args <- getArgs
