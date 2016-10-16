@@ -1,0 +1,4 @@
+source test/env.sh
+source test/before.sh
+source test/_$1.sh
+source test/assert.sh

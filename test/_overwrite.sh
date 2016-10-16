@@ -1,0 +1,2 @@
+runhugs Main.hs $actual
+
