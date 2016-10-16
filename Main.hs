@@ -1,12 +1,15 @@
 module Main where
+import System.Exit(exitWith, ExitCode(ExitFailure))
 import System.Environment (getArgs)
+import System.IO (hPutStrLn, stderr)
 
 main = do
   args <- getArgs
   case args of
+    []        -> putStrLn usage
     [inp]     -> overwriteWith fixLines inp
     [inp,out] -> writeWith fixLines inp out
-    _         -> usage "not enough arguments"
+    _         -> die "error: too many arguments"
 
 writeWith f inpf outf = do
   input <- readFile inpf
@@ -26,16 +29,25 @@ trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
 trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
 trimLeadWtSpc cs        = cs
 
-usage msg = do
-  putStrLn $ msg
-    ++  "\nusage:"
-    ++  "\ntrimspaces <input> <output>  trim trailing"
-    ++  "\n                             whitespace from"
-    ++  "\n                             <input> and write"
-    ++  "\n                             result to <output>"
-    ++  "\ntrimspaces <input>           trim trailing"
-    ++  "\n                             whitespace from"
-    ++  "\n                             <input> and" 
-    ++  "\n                             overwrite result"
-    ++  "\n                             back to <input>"
+usage = unlines
+  [ ""
+  , "usage:"
+  , ""
+  , "trimspaces <input>           trim trailing"
+  , "                             whitespace from"
+  , "                             <input> and"
+  , "                             overwrite result"
+  , "                             back to <input>"
+  , ""
+  , "trimspaces <input> <output>  trim trailing"
+  , "                             whitespace from"
+  , "                             <input> and write"
+  , "                             result to <output>"
+  , ""
+  ]
 
+die msg = do
+  putStrLn ""
+  hPutStrLn stderr msg
+  putStrLn usage
+  exitWith (ExitFailure 1)
