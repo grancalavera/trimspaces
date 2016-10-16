@@ -41,7 +41,7 @@ writeWith f inpf outf = do
   rHandle <- openFile inpf ReadMode
   wHandle <- openFile tmpfile WriteMode
   input   <- hGetContents rHandle
-  hPutStr wHandle (input `seq` f input)
+  hPutStr wHandle (f input)
   hClose rHandle
   hClose wHandle
   copyFile tmpfile outf
