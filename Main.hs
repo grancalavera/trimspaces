@@ -1,7 +1,19 @@
 module Main where
 import System.Exit(exitWith, ExitCode(ExitFailure))
 import System.Environment (getArgs)
-import System.IO (FilePath, hPutStrLn, stderr)
+import System.IO ( FilePath
+                 , hPutStrLn
+                 , hPutStr
+                 , hClose
+                 , stderr
+                 , openFile
+                 , hGetContents
+                 , IOMode(ReadMode, WriteMode)
+                 )
+import System.Directory ( getTemporaryDirectory
+                        , removeFile
+                        , copyFile
+                        )
 
 main:: IO ()
 main = do
@@ -25,13 +37,40 @@ trimLeadWtSpc cs        = cs
 
 writeWith :: (String -> String) -> FilePath -> FilePath -> IO ()
 writeWith f inpf outf = do
-  input <- readFile inpf
-  input `seq` (writeFile outf $ f input)
+  tmpfile <- getTemporaryFile
+  rHandle <- openFile inpf ReadMode
+  wHandle <- openFile tmpfile WriteMode
+  input   <- hGetContents rHandle
+  hPutStr wHandle (input `seq` f input)
+  hClose rHandle
+  hClose wHandle
+  copyFile tmpfile outf
+  removeFile tmpfile
   putStrLn $ "file \"" ++ outf ++ "\" " ++ operation
     where
       operation
        | inpf == outf = "overwtritten"
        | otherwise    = "written"
+
+getTemporaryFile :: IO FilePath
+getTemporaryFile = do
+  dir <- getTemporaryDirectory
+  return (file dir)
+    where
+      file dir'
+        | needsSlash dir' = dir' ++ "/" ++ filename
+        | otherwise       = dir' ++ filename
+        where filename = "trimspaces.tmp"
+
+-- because runhugs (or debian...?) does not
+-- append a trailing slash,
+-- but runghci (or MacOS...?) does
+-- and I want this to work
+-- on my Pocket CHIP (debian, runhugs)
+-- and on my Mac (MacOS, runghc)
+needsSlash :: FilePath -> Bool
+needsSlash []   = False
+needsSlash path = head (reverse path)  /= '/'
 
 usage :: String
 usage = unlines
