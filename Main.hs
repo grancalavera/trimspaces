@@ -1,34 +1,38 @@
 module Main where
 import System.Exit(exitWith, ExitCode(ExitFailure))
 import System.Environment (getArgs)
-import System.IO (hPutStrLn, stderr)
+import System.IO (FilePath, hPutStrLn, stderr)
 
+main:: IO ()
 main = do
   args <- getArgs
   case args of
     []        -> putStrLn usage
-    [inp]     -> overwriteWith fixLines inp
-    [inp,out] -> writeWith fixLines inp out
+    [inp]     -> writeWith trimspaces inp inp
+    [inp,out] -> writeWith trimspaces inp out
     _         -> die "error: too many arguments"
 
-writeWith f inpf outf = do
-  input <- readFile inpf
-  input `seq` (writeFile outf $ f input)
-
-overwriteWith f inpf = do
-  writeWith f inpf inpf
-  putStrLn $ "file \"" ++ inpf ++ "\" ovewritten"
-
-fixLines cs = unlines (map trimTrailWtSpc $ lines cs)
+trimspaces :: String -> String
+trimspaces cs = unlines (map trimTrailWtSpc $ lines cs)
 
 trimTrailWtSpc :: String -> String
 trimTrailWtSpc cs = reverse (trimLeadWtSpc $ reverse cs)
 
-trimLeadWtSpc :: String -> String
 trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
 trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
 trimLeadWtSpc cs        = cs
 
+writeWith :: (String -> String) -> FilePath -> FilePath -> IO ()
+writeWith f inpf outf = do
+  input <- readFile inpf
+  input `seq` (writeFile outf $ f input)
+  putStrLn $ "file \"" ++ outf ++ "\" " ++ operation
+    where
+      operation
+       | inpf == outf = "overwtritten"
+       | otherwise    = "written"
+
+usage :: String
 usage = unlines
   [ ""
   , "usage:"
@@ -46,6 +50,7 @@ usage = unlines
   , ""
   ]
 
+die :: String -> IO ()
 die msg = do
   putStrLn ""
   hPutStrLn stderr msg
