@@ -18,6 +18,7 @@ trimspaces cs = unlines (map trimTrailWtSpc $ lines cs)
 trimTrailWtSpc :: String -> String
 trimTrailWtSpc cs = reverse (trimLeadWtSpc $ reverse cs)
 
+trimLeadWtSpc :: String -> String
 trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
 trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
 trimLeadWtSpc cs        = cs
