@@ -1,0 +1,5 @@
+source test/env.sh
+for i in test/_*.sh; do
+  source test/runtest.sh $i
+done
+

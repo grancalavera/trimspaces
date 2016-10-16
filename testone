@@ -1,0 +1,3 @@
+source test/env.sh
+source test/runtest.sh test/_$1.sh
+

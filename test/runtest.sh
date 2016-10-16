@@ -1,4 +1,5 @@
-source test/env.sh
+echo "running: $1"
 source test/before.sh
-source test/_$1.sh
+source $1
 source test/assert.sh
+
