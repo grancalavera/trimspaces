@@ -1,2 +1,2 @@
-runhugs Main.hs $actual
+$interpreter Main.hs $actual
 
