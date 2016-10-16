@@ -62,11 +62,12 @@ getTemporaryFile = do
         | otherwise       = dir' ++ filename
         where filename = "trimspaces.tmp"
 
--- because runhugs (or debian...?) does not
+-- because of getTemporaryDirectory:
+-- on runhugs (or Debian...?) it does not
 -- append a trailing slash,
--- but runghci (or MacOS...?) does
+-- but runghci (or MacOS...?) it does,
 -- and I want this to work
--- on my Pocket CHIP (debian, runhugs)
+-- on my Pocket CHIP (Debian, runhugs)
 -- and on my Mac (MacOS, runghc)
 needsSlash :: FilePath -> Bool
 needsSlash []   = False
