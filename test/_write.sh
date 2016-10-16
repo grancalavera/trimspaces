@@ -1,2 +1,2 @@
-$interpreter Main.hs $input $actual
+$run Main.hs $input $actual
 
