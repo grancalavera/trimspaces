@@ -65,7 +65,7 @@ getTemporaryFile = do
 -- because of getTemporaryDirectory:
 -- on runhugs (or Debian...?) it does not
 -- append a trailing slash,
--- but runghci (or MacOS...?) it does,
+-- but in runghc (or MacOS...?) it does,
 -- and I want this to work
 -- on my Pocket CHIP (Debian, runhugs)
 -- and on my Mac (MacOS, runghc)
