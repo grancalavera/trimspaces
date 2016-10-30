@@ -1,3 +1,5 @@
+#!/usr/bin/runhugs
+
 module Main where
 import System.Exit(exitWith, ExitCode(ExitFailure))
 import System.Environment (getArgs)
