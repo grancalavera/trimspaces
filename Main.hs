@@ -16,6 +16,7 @@ import System.Directory ( getTemporaryDirectory
                         , removeFile
                         , copyFile
                         )
+import Data.Char (isSpace)
 
 main:: IO ()
 main = do
@@ -33,9 +34,7 @@ trimTrailWtSpc :: String -> String
 trimTrailWtSpc cs = reverse (trimLeadWtSpc $ reverse cs)
 
 trimLeadWtSpc :: String -> String
-trimLeadWtSpc (' ':cs)  = trimLeadWtSpc cs
-trimLeadWtSpc ('\t':cs) = trimLeadWtSpc cs
-trimLeadWtSpc cs        = cs
+trimLeadWtSpc = dropWhile isSpace
 
 writeWith :: (String -> String) -> FilePath -> FilePath -> IO ()
 writeWith f inpf outf = do
